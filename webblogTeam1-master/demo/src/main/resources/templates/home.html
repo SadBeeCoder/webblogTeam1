@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Blogpost Group 1</title>
+</head>
+<body>
+<h1 th:text="${'Welcome, unknown user'}" th:if="${sessionUser == null}"></h1>
+<h1 th:text="${'Welcome, ' + sessionUser.username}" th:if="${sessionUser != null}"></h1>
+<a th:href="@{/login}" th:if="${sessionUser == null}">Login</a>
+<a th:href="@{/register}">Sign up</a>
+
+<form th:if="${sessionUser != null}" method="post" th:action="@{/logout}">
+    <button type="submit">Logout</button>
+</form>
+
+<hr>
+<p>
+    <a th:href="@{/message}" th:if="${sessionUser != null
+    && sessionUser.getRole() == T(com.webblogTeam1.demo1.Role).ADMIN
+    }">Post a Message</a>
+</p>
+
+
+<div th:each="postMessage: ${messages}">
+    <a th:href="@{/post/{postId}(postId=${postMessage.id})}">
+        <strong th:text="${postMessage.text.substring(0,3)}"></strong>
+        <!--<strong th:text="${'@' + postMessage.user.username}"></strong>-->
+    </a>
+    <span th:text="${'   @' + postMessage.user.username}"></span>
+    <form th:if="${sessionUser != null &&  (sessionUser == postMessage.user ||
+     sessionUser.getRole() == T(com.webblogTeam1.demo1.Role).ADMIN)}" method="post"
+          th:action="@{/messageDelete(messageId=${postMessage.id})}">
+        <button type="submit">
+            Delete
+        </button>
+    </form>
+    <!--<span th:text="${postMessage.text.substring(0,5)}"></span>-->
+</div>
+
+
+</body>
+</html>

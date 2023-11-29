@@ -1,0 +1,22 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Zwitscher</title>
+</head>
+<body>
+<h1 th:text="${user.username}"></h1>
+<a th:href="@{/}">Home</a>
+
+<hr>
+
+        <div class="message-box" th:each="postMessage: ${user.messages}">
+            <strong class="posted-at" th:text="${#dates.format(postMessage.postedAt)}"></strong>
+            <span class="message-text" th:text="${postMessage.text}"></span>
+            <form class="delete-form" th:if="${user == sessionUser}" method="post" th:action="@{/messageDelete(messageId=${postMessage.id})}">
+                <button class="button is-danger" type="submit">Delete</button>
+            </form>
+        </div>
+    </div>
+</section>
+</body>
+</html>

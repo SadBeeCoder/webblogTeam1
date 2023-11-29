@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <title>Write a Blogpost</title>
+</head>
+<body>
+<section class="section">
+    <div class="container">
+        <h1 class="title">Post a message</h1>
+        <form th:action="@{/message}" th:object="${postMessage}" method="post">
+            <div class="field">
+                <label class="label">Title:</label>
+                <div class="control">
+                    <input class="input" type="text" th:field="*{title}">
+                </div>
+                <p th:if="${#fields.hasErrors('title')}" class="help is-danger" th:errors="*{title}"></p>
+            </div>
+            <div class="field">
+                <label class="label">Message:</label>
+                <div class="control">
+                    <textarea class="textarea" th:field="*{text}"></textarea>
+                </div>
+                <p th:if="${#fields.hasErrors('text')}" class="help is-danger" th:errors="*{text}"></p>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button class="button is-primary" type="submit">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+</html>

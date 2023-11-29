@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Post</title>
+</head>
+<body>
+<h1 th:text="${postMessage.text}"></h1>
+<a th:href="@{/}">Home</a>
+<hr>
+<div>
+    <p>Comments</p>
+</div>
+<div th:each="comment: ${postMessage.comments}">
+  <span th:text="${comment.text}"></span>
+  <strong th:text="${#dates.format(comment.postedAt)}"></strong>
+  <form th:if="${sessionUser != null && (sessionUser == comment.getUser() || sessionUser.getRole() == T(com.webblogTeam1.demo1.Role).ADMIN)}" method="post" th:action="@{/deletecomment/{commentId}(commentId=${comment.id})}">
+    <button type="submit">Delete</button>
+  </form>
+    <hr>
+</div>
+<div>
+    <hr>
+    <h5>Add a comment</h5>
+    <form th:action="@{/post/{id}(id=${postId})}" th:object="${comment}" method="post">
+        <textarea th:field="*{text}"></textarea>
+        <p th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></p>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+</body>
+</html>
